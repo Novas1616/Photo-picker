@@ -1,188 +1,91 @@
-📸 macOS Photo Flag Picker & Auto-Importer for Lightroom Classic
+## 📸 macOS Photo Flag Picker & Auto-Importer for Lightroom Classic
 
-Import only your best shots. Straight from the camera to Lightroom Classic.
+A lightweight, lightning-fast Python script tailored for sports, event, and reportage photographers on macOS.
 
-A lightweight, fast Python tool for sports, event, and reportage photographers using macOS. It scans mounted memory cards, identifies in-camera protected or locked photos, generates Adobe-compatible XMP sidecars, and prepares selected images for import into Adobe Lightroom Classic.
+This tool automates the ingestion workflow by extracting only in-camera locked (flagged/protected) photos from your SD/CFexpress cards, automatically generating Adobe-compliant XMP sidecars (with metadata and 5-star ratings), and handing them over to Adobe Lightroom Classic via the Auto-Import feature.
 
-Skip the tedious task of culling thousands of images on your Mac. Flag your keepers in-camera, run the picker, and let Lightroom handle the rest.
+Stop wasting time culling thousands of photos on your Mac. Lock your best shots directly in-camera during the game/event, run this app, and let Lightroom import only the winners.
 
-✨ Features
-In-Camera Flag Detection — Scans mounted volumes under /Volumes and selects protected or locked files. Supports .RW2, .ORF, and .JPG.
-Automatic XMP Sidecars — Generates an XMP sidecar for each selected image, including a 5-star rating, creator metadata, and copyright information.
-Lightroom Classic Auto Import — Copies selected images and their sidecars into a configured watched folder.
-macOS File Permission Handling — Removes the UF_IMMUTABLE file flag when necessary and updates file permissions to help prevent import and file-movement issues.
-Duplicate Prevention — Uses image filenames and EXIF capture timestamps to identify previously imported photos and reduce duplicate ingestion.
-Zero External Dependencies — Uses only the Python 3 standard library. No pip packages, ExifTool, or third-party libraries required.
-Apple Silicon & Intel Support — Designed for macOS systems running on both Apple Silicon and Intel processors.
-🖥️ Requirements
-macOS
-Python 3.x
-Adobe Lightroom Classic
-A memory card reader or mounted camera storage
-Lightroom Classic Auto Import configured and enabled
-⚙️ Installation & Configuration
-1. Download the Script
+🚀 Key Features
 
-Clone the repository or download picker.py directly.
+In-Camera Flag Detection: Scans connected memory cards mounted under /Volumes and copies only protected/locked files (supports .RW2, .ORF, and .JPG).
 
-bash
-git clone https://github.com/YOUR_USERNAME/YOUR_REPOSITORY.git
-cd YOUR_REPOSITORY
+Automated XMP Sidecars: Automatically writes an .xmp sidecar alongside each image. It pre-tags files with a 5-star rating (xmp:Rating="5") and applies your creator credentials and copyright information.
 
+macOS System Lock Removal: Strips native system immutability flags (UF_IMMUTABLE) and updates file permissions to 0777 so Lightroom Classic can move and catalog files seamlessly without permission errors.
 
-Replace YOUR_USERNAME and YOUR_REPOSITORY with your actual GitHub username and repository name.
+EXIF-Based Duplicate Prevention: Identifies previously imported images by parsing exact EXIF capture timestamps and file names. Prevents duplicate ingestion even if you reuse the same card without formatting.
 
-2. Configure Your Metadata
+Zero External Dependencies: Built purely using the standard Python 3 library. No need to install pip packages, exiftool, or third-party libraries. It reads EXIF data directly via binary parsing for maximum speed on Apple Silicon (M1/M2/M3) and Intel Macs.
 
-Open picker.py and update the configuration variables near the top of the file.
+⚙️ Requirements
 
-python
+macOS (Tested on Apple Silicon & Intel)
+
+Python 3.x (Pre-installed on most Macs, or via Homebrew)
+
+Adobe Lightroom Classic (with Auto Import enabled)
+
+🛠️ Setup & Configuration
+
+1. Configure the Script
+
+Open picker.py in any text editor and update the variables at the top to match your identity and folder structure:
+
 # --- MAC CONFIGURATION ---
-
-AUTHOR_NAME = "Michal Novák"
+AUTHOR_NAME = "Michal Novák" 
 COPYRIGHT_TEXT = f"© 2026 {AUTHOR_NAME}. All rights reserved."
 
-HOME = os.path.expanduser("~")
-
 # Folder monitored by Lightroom Classic Auto Import
-WATCHED_FOLDER = os.path.join(
-    HOME,
-    "Pictures",
-    "fotografie",
-    "raw",
-    "import",
-)
+WATCHED_FOLDER = os.path.join(HOME, "Pictures", "fotografie", "raw", "import")
 
 
-Adjust the author name, copyright text, and watched folder to match your workflow.
+2. Configure Lightroom Classic Auto Import
 
-3. Configure Lightroom Classic Auto Import
 Open Adobe Lightroom Classic.
-Navigate to File → Auto Import → Auto Import Settings.
-Enable Auto Import.
-Set the Watched Folder to the same directory configured in WATCHED_FOLDER.
-Choose a destination folder where Lightroom Classic should store imported images.
-Confirm the settings.
-Important: Lightroom Classic must be configured to watch the correct folder. The script's destination and Lightroom's watched folder must match.
-🚀 Usage
-Option A: Run from Terminal
-Insert your SD or CFexpress card.
-Open Terminal.
-Navigate to the directory containing picker.py.
-Run:
-bash
+
+Go to File -> Auto Import -> Auto Import Settings...
+
+Check Enable Auto Import.
+
+Set the Watched Folder to the exact same path you defined in WATCHED_FOLDER in the script.
+
+Set the Destination folder where you want Lightroom to permanently move the files.
+
+Click OK.
+
+💻 How to Run It
+
+Option A: Via Terminal
+
+Simply plug in your SD card, open Terminal, and run:
+
 python3 picker.py
 
 
-The script scans mounted volumes, identifies eligible protected images, checks for duplicates, generates XMP sidecars, and copies selected files to the configured import folder.
+Option B: Create a Clickable macOS App (Recommended)
 
-Option B: Create a Clickable macOS Application
+You don't need to open the Terminal every time. You can wrap this script into a native macOS app using Automator:
 
-You can launch the script through a simple Automator application without opening Terminal manually.
+Open Automator on your Mac and create a new Application.
 
-Open Automator.
-Create a new Application.
-Search for Run Shell Script and add the action.
-Select /bin/bash or /bin/zsh as the shell.
-Enter the following command, updating the path to your script:
-bash
-/usr/bin/python3 "/Users/YOUR_USERNAME/path/to/picker.py"
+Search for the action Run Shell Script and drag it to the right pane.
 
-Save the application as Photo Picker.app.
-Optionally, customize the application icon using Get Info (⌘ + I).
+Set the "Shell" dropdown to /bin/bash or /bin/zsh.
 
-You can now launch the picker by double-clicking the application.
+Paste the following command (update the path to where you saved the script):
 
-Note: macOS may request permission to access removable volumes or files in protected folders. Grant only the permissions needed for your workflow.
-📂 Supported Image Formats
+/usr/bin/python3 /Users/YOUR_USERNAME/path/to/picker.py
 
-The default supported extensions are:
 
-Format	Extension
-Panasonic RAW	.rw2
-OM SYSTEM / Olympus RAW	.orf
-JPEG	.jpg
+Save the Automator document as "Photo Picker.app" in your Applications folder.
 
-Extensions are matched case-insensitively.
+(Optional) You can copy any custom icon, select your new App, press Cmd + I (Get Info), and paste the new icon over the default Automator icon in the top left corner.
 
-Additional formats, such as Canon RAW (.cr3), Sony RAW (.arw), and Nikon RAW (.nef), may be added by updating the script's supported-extension list.
+Done! Now, whenever you insert an SD card, just double-click your new app.
 
-Important: Adding an extension only enables file selection. It does not guarantee that every camera's protection flags or metadata will be interpreted correctly.
+⚠️ Notes & Troubleshooting
 
-⭐ XMP Metadata
+Permissions: The first time you run the script (or the Automator app), macOS will ask for permission to access Removable Volumes. You must click Allow so the script can read your SD cards.
 
-For each selected image, the script creates an accompanying XMP sidecar containing metadata intended for Adobe Lightroom Classic.
-
-The default workflow includes:
-
-A 5-star rating (xmp:Rating="5")
-Creator information
-Copyright information
-Metadata associated with the original image
-
-The sidecar is intended to let Lightroom recognize the selected images as pre-rated keepers during import.
-
-🔁 Duplicate Prevention
-
-The picker uses filenames and EXIF capture timestamps to help identify previously imported images.
-
-This is particularly useful when reusing the same memory card across multiple events without formatting it after every shoot.
-
-Duplicate detection depends on the metadata available in the image files and the implementation's matching logic. It should not be treated as a guarantee that every duplicate or filename collision will be detected.
-
-🔐 File Permissions & Safety
-
-The script may remove the macOS UF_IMMUTABLE file flag and update permissions on selected files to help Lightroom access them.
-
-Use caution: Setting permissions to 0777 grants read, write, and execute permissions to all users. This is broader than most photo-import workflows require. Prefer the least-permissive settings that allow the script and Lightroom Classic to access the files.
-
-The script should never modify or delete the originals on your memory card unless that behavior is explicitly implemented and intended.
-
-🛠️ Troubleshooting
-Lightroom does not import the images
-Verify that Auto Import is enabled.
-Check that WATCHED_FOLDER matches Lightroom's configured watched folder.
-Ensure Lightroom can access the destination folder.
-Confirm that the selected files and XMP sidecars are copied successfully.
-No protected images are detected
-Confirm that the camera marks the intended images as protected or locked.
-Check that the memory card is mounted under /Volumes.
-Verify that your camera model stores protection information in a format recognized by the script.
-Confirm that the file extension is supported.
-Permission errors occur
-Check macOS privacy permissions for removable volumes and the relevant folders.
-Verify file ownership and access permissions.
-Avoid applying unnecessarily broad permissions to entire memory cards or directories.
-Duplicate images are imported
-Check whether the files contain readable EXIF capture timestamps.
-Verify how the script compares filenames and timestamps.
-Remember that different cameras may produce identical filenames or timestamps.
-🗺️ Roadmap
-
-Potential future improvements:
-
-Support additional RAW formats (.CR3, .ARW, .NEF, and others).
-Add a dry-run mode to preview selected files before copying.
-Provide a configurable rating instead of a fixed 5-star rating.
-Improve duplicate detection across different camera models.
-Add structured logging and an import summary.
-Add optional automatic monitoring of newly mounted memory cards.
-Package the script as a standalone macOS application.
-🤝 Contributing
-
-Contributions, bug reports, and feature requests are welcome.
-
-Fork the repository.
-Create a feature branch.
-Commit your changes.
-Open a pull request with a clear description of the changes.
-
-When reporting a bug, include your macOS version, Python version, camera model, image format, and any relevant error messages. Avoid sharing private photographs or sensitive metadata.
-
-📄 License
-
-No license has been specified yet.
-
-Before publishing the project as open source, add a LICENSE file and select a license that matches your intended terms of use.
-
-Built for photographers who know their keepers before they leave the camera. 📸
+Supported Formats: The script currently looks for .rw2, .orf, and .jpg (case-insensitive). You can easily add more extensions like .cr3, .arw, or .nef by editing the .endswith() tuple in the code.
