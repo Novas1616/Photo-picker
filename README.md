@@ -1,4 +1,4 @@
-## 📸 macOS Photo Flag Picker & Auto-Importer for Lightroom Classic
+### 📸 macOS Photo Flag Picker & Auto-Importer for Lightroom Classic
 
 A lightweight, lightning-fast Python script tailored for sports, event, and reportage photographers on macOS.
 
