@@ -1,4 +1,4 @@
-### 📸 macOS Photo Flag Picker & Auto-Importer for Lightroom Classic
+# --- 📸 macOS Photo Flag Picker & Auto-Importer for Lightroom Classic ---
 
 A lightweight, lightning-fast Python script tailored for sports, event, and reportage photographers on macOS.
 
@@ -6,7 +6,7 @@ This tool automates the ingestion workflow by extracting only in-camera locked (
 
 Stop wasting time culling thousands of photos on your Mac. Lock your best shots directly in-camera during the game/event, run this app, and let Lightroom import only the winners.
 
-🚀 Key Features
+###🚀 Key Features
 
 In-Camera Flag Detection: Scans connected memory cards mounted under /Volumes and copies only protected/locked files (supports .RW2, .ORF, and .JPG).
 
@@ -18,7 +18,7 @@ EXIF-Based Duplicate Prevention: Identifies previously imported images by parsin
 
 Zero External Dependencies: Built purely using the standard Python 3 library. No need to install pip packages, exiftool, or third-party libraries. It reads EXIF data directly via binary parsing for maximum speed on Apple Silicon (M1/M2/M3) and Intel Macs.
 
-⚙️ Requirements
+### ⚙️ Requirements
 
 macOS (Tested on Apple Silicon & Intel)
 
@@ -26,7 +26,7 @@ Python 3.x (Pre-installed on most Macs, or via Homebrew)
 
 Adobe Lightroom Classic (with Auto Import enabled)
 
-🛠️ Setup & Configuration
+### 🛠️ Setup & Configuration
 
 1. Configure the Script
 
@@ -40,7 +40,7 @@ COPYRIGHT_TEXT = f"© 2026 {AUTHOR_NAME}. All rights reserved."
 WATCHED_FOLDER = os.path.join(HOME, "Pictures", "fotografie", "raw", "import")
 
 
-2. Configure Lightroom Classic Auto Import
+### 2. Configure Lightroom Classic Auto Import
 
 Open Adobe Lightroom Classic.
 
@@ -54,7 +54,7 @@ Set the Destination folder where you want Lightroom to permanently move the file
 
 Click OK.
 
-💻 How to Run It
+### 💻 How to Run It
 
 Option A: Via Terminal
 
@@ -63,7 +63,7 @@ Simply plug in your SD card, open Terminal, and run:
 python3 picker.py
 
 
-Option B: Create a Clickable macOS App (Recommended)
+### Option B: Create a Clickable macOS App (Recommended)
 
 You don't need to open the Terminal every time. You can wrap this script into a native macOS app using Automator:
 
